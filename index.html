@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AH IPTV - Premium Streaming Studio</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
@@ -149,7 +149,6 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-            cursor: pointer;
         }
 
         .video-viewport-wrapper video {
@@ -158,7 +157,7 @@
             object-fit: contain;
         }
 
-        /* INTERACTION HUD OVERLAY (MODERNIZED: ALIGNED BELOW, BLUR ELIMINATED) */
+        /* INTERACTION HUD OVERLAY */
         .playback-hud-overlay {
             position: absolute;
             bottom: 0;
@@ -220,20 +219,43 @@
             color: var(--text-pure);
         }
 
-        /* LIVE WATERMARK HUD LOGO */
-        .hud-live-tag {
+        /* CLICKABLE REALTIME LIVE SYNC BUTTON */
+        .hud-live-tag-btn {
             position: absolute;
             top: 20px;
             left: 20px;
             background: rgba(255, 0, 43, 0.2);
             border: 1px solid var(--primary);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: 800;
+            color: var(--text-pure);
             letter-spacing: 1px;
             text-transform: uppercase;
-            pointer-events: none;
+            cursor: pointer;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 43, 0.3);
+        }
+
+        .hud-live-tag-btn::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ff002b;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #ff002b;
+        }
+
+        .hud-live-tag-btn:hover {
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: scale(1.04);
         }
 
         /* REFACTORED SEARCH SYSTEM */
@@ -456,7 +478,7 @@
         }
 
         .footer-attribution a i {
-            color: #0077b5; /* LinkedIn signature brand styling coloration */
+            color: #0077b5;
             animation: none;
             font-size: 13px;
         }
@@ -470,30 +492,55 @@
             50% { transform: scale(1.2); }
         }
 
-        /* VIEWPORT RESIZING FALLBACK PARADIGMS */
+        /* STICKY/FIXED RESPONSIVE LAYOUT SYSTEM DEPLOYMENT */
         @media (max-width: 1023px) {
             body {
-                overflow-y: auto;
-                height: auto;
+                overflow: hidden; /* Prevent global browser jitter */
+                height: 100vh;
+            }
+            .app-navbar {
+                padding: 12px 16px;
             }
             .content-wrapper {
-                overflow: visible;
-                height: auto;
+                overflow: hidden;
+                height: calc(100vh - 65px);
             }
             .app-stage {
-                padding: 16px;
-                overflow: visible;
+                padding: 0;
+                gap: 0;
+                flex-direction: column;
+                height: 100%;
             }
+            /* LOCKS THE THEATER FRAME AT TOP FIXED VIEW IN RESPONSIVE MODE */
+            .video-theater-block {
+                position: sticky;
+                top: 0;
+                width: 100%;
+                z-index: 50;
+                background: var(--bg-deep);
+                padding: 10px 10px 15px 10px;
+                flex-shrink: 0;
+            }
+            .video-viewport-wrapper {
+                border-radius: 14px;
+            }
+            /* MAKE THE SIDEBAR CHANNELS LIST THE ONLY SCROLLABLE AREA */
             .navigation-sidebar-block {
+                flex: 1;
                 background: var(--bg-surface);
-                border-radius: 20px;
+                border-radius: 20px 20px 0 0;
                 border: 1px solid var(--line-edge);
+                border-bottom: none;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
             }
             .app-footer {
                 flex-direction: column;
-                gap: 8px;
-                padding: 16px;
+                gap: 6px;
+                padding: 12px;
                 text-align: center;
+                font-size: 11px;
             }
         }
     </style>
@@ -524,9 +571,11 @@
             <div class="video-theater-block">
                 <div class="video-viewport-wrapper" id="viewportFrame">
                     <video id="video" autoplay playsinline></video>
-                    <div class="hud-live-tag">Live Feed</div>
                     
-                    <!-- PLAYBACK CONTROLS OVERLAY INTERACTION HUD (MOVED TO BOTTOM, BLUR REDUCED TO 0) -->
+                    <!-- INTERACTIVE LIVE SYNC ACTION BADGE -->
+                    <button class="hud-live-tag-btn" onclick="event.stopPropagation(); syncToLiveTime();" title="Sync to Realtime Live Stream">Live</button>
+                    
+                    <!-- PLAYBACK CONTROLS OVERLAY INTERACTION HUD -->
                     <div class="playback-hud-overlay" id="hudOverlay">
                         <button class="hud-btn" onclick="event.stopPropagation(); prevChannel();" title="Previous Station">
                             <i class="fas fa-backward"></i>
@@ -578,7 +627,7 @@
         </div>
     </div>
 
-    <!-- REFACTORED APPLICATION FOOTER LAYER WITH LINKEDIN CONNECTIVITY -->
+    <!-- PREMIUM APPLICATION FOOTER LAYER WITH LINKEDIN CONNECTIVITY -->
     <footer class="app-footer">
         <div class="footer-copyright">
             &copy; 2026 <span>AH IPTV</span> Studio. All Rights Reserved.
@@ -659,16 +708,19 @@
                 if (window.globalHlsRuntime) {
                     window.globalHlsRuntime.destroy();
                 }
-                const hlsInstance = new Hls();
+                const hlsInstance = new Hls({
+                    liveSyncDurationCount: 3,
+                    liveMaxLatencyDurationCount: 10
+                });
                 window.globalHlsRuntime = hlsInstance;
                 hlsInstance.loadSource(targetedStation.url);
                 hlsInstance.attachMedia(videoElement);
                 hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => { 
-                    videoElement.play().catch(e => console.log("Autoplay policy engine catch configuration:", e)); 
+                    videoElement.play().catch(e => console.log("Autoplay context:", e)); 
                 });
             } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
                 videoElement.src = targetedStation.url;
-                videoElement.play().catch(e => console.log("Safari core playback policy exception handled:", e));
+                videoElement.play().catch(e => console.log("Safari platform fallback context:", e));
             }
 
             document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('state-active'));
@@ -676,6 +728,22 @@
             if(activeStack[targetIndex]) {
                 activeStack[targetIndex].classList.add('state-active');
                 activeStack[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            updateMasterPlaybackIcon(true);
+        }
+
+        // INSTANT LIVE SYNCHRONIZER
+        function syncToLiveTime() {
+            if (window.globalHlsRuntime) {
+                // Hls engine edge computation jump
+                videoElement.currentTime = window.globalHlsRuntime.liveSyncPosition;
+                videoElement.play().catch(e => console.log(e));
+            } else {
+                // Native desktop and mobile browsers edge seek jump
+                if (videoElement.seekable.length > 0) {
+                    videoElement.currentTime = videoElement.seekable.end(videoElement.seekable.length - 1);
+                    videoElement.play().catch(e => console.log(e));
+                }
             }
             updateMasterPlaybackIcon(true);
         }
@@ -712,7 +780,7 @@
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 viewportFrame.requestFullscreen().catch(err => {
-                    console.error(`Error attempting to enable fullscreen layout: ${err.message}`);
+                    console.error(`Fullscreen deployment fault: ${err.message}`);
                 });
             } else {
                 document.exitFullscreen();
@@ -734,20 +802,7 @@
             graphicIcon.className = isCurrentlyPlaying ? 'fas fa-pause' : 'fas fa-play';
         }
 
-        // GLOBAL HUD TRIGGERS & SHORTCUT MANAGEMENT
-        viewportFrame.addEventListener('click', (e) => {
-            if (e.target === videoElement || e.target.id === 'hudOverlay') {
-                togglePlay();
-            }
-        });
-
-        viewportFrame.addEventListener('dblclick', (e) => {
-            if (e.target === videoElement || e.target.id === 'hudOverlay') {
-                toggleFullscreen();
-            }
-        });
-
-        // ACCESSIBILITY HOTKEYS
+        // SYSTEM SHORTCUT WINDOW MANAGEMENT
         window.addEventListener('keydown', (e) => {
             if (document.activeElement.tagName === 'INPUT') return; 
             if (e.code === 'Space') {
@@ -773,8 +828,12 @@
             });
         }
 
-        // HUD AUTO-HIDE LOOPS
-        function cycleHudStateVisibility() {
+        // HUD AUTO-HIDE CONTROL LAYER
+        function cycleHudStateVisibility(e) {
+            // Prevent auto-pauses on screen touches
+            if(e && e.type === 'touchstart' && e.target !== videoElement && e.target.id !== 'hudOverlay') {
+                return;
+            }
             viewportFrame.classList.add('hud-active');
             clearTimeout(hudFadeTimeout);
             hudFadeTimeout = setTimeout(() => {
@@ -783,7 +842,7 @@
         }
 
         viewportFrame.addEventListener('mousemove', cycleHudStateVisibility);
-        viewportFrame.addEventListener('touchstart', cycleHudStateVisibility);
+        viewportFrame.addEventListener('touchstart', cycleHudStateVisibility, { passive: true });
     </script>
 
     <!-- METRICS LAYER -->
