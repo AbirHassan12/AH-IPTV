@@ -260,8 +260,8 @@
 
         /* REFACTORED SEARCH SYSTEM */
         .search-deck {
-            padding: 20px;
-            border-bottom: 1px solid var(--line-edge);
+            padding: 20px 20px 10px 20px;
+            border-bottom: none;
             flex-shrink: 0;
         }
 
@@ -295,6 +295,66 @@
             background: rgba(255, 255, 255, 0.06);
             border-color: var(--primary);
             box-shadow: 0 0 15px rgba(255, 0, 43, 0.15);
+        }
+
+        /* DYNAMIC CATEGORY FILTER DECK */
+        .category-filter-deck {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 15px 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--line-edge);
+        }
+
+        .category-filter-deck::-webkit-scrollbar {
+            height: 4px;
+        }
+        .category-filter-deck::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .category-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line-edge);
+            color: var(--text-stale);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .category-pill:hover {
+            color: var(--text-pure);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .category-pill.active-pill {
+            background: var(--primary);
+            color: var(--text-pure);
+            border-color: transparent;
+            box-shadow: 0 5px 15px var(--primary-glow);
+        }
+
+        .category-pill .counter-badge {
+            font-size: 10px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .category-pill.active-pill .counter-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-pure);
         }
 
         /* ENGINE SCROLL TUNNEL */
@@ -361,6 +421,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             line-height: 1.4;
+            word-break: break-word;
         }
 
         /* TRACK ACTIVE CHANNEL LOGIC STATE */
@@ -495,7 +556,7 @@
         /* STICKY/FIXED RESPONSIVE LAYOUT SYSTEM DEPLOYMENT */
         @media (max-width: 1023px) {
             body {
-                overflow: hidden; /* Prevent global browser jitter */
+                overflow: hidden;
                 height: 100vh;
             }
             .app-navbar {
@@ -511,7 +572,6 @@
                 flex-direction: column;
                 height: 100%;
             }
-            /* LOCKS THE THEATER FRAME AT TOP FIXED VIEW IN RESPONSIVE MODE */
             .video-theater-block {
                 position: sticky;
                 top: 0;
@@ -524,7 +584,6 @@
             .video-viewport-wrapper {
                 border-radius: 14px;
             }
-            /* MAKE THE SIDEBAR CHANNELS LIST THE ONLY SCROLLABLE AREA */
             .navigation-sidebar-block {
                 flex: 1;
                 background: var(--bg-surface);
@@ -547,7 +606,6 @@
 </head>
 <body>
 
-    <!-- APPLICATION SYSTEM BAR -->
     <div class="app-navbar">
         <div class="brand-logo">AH <span>IPTV</span></div>
         
@@ -563,19 +621,15 @@
         </div>
     </div>
 
-    <!-- MAIN INTERFACE INNER SCROLL CONTAINER -->
     <div class="content-wrapper">
         <div class="app-stage">
             
-            <!-- LEFT SCREEN STAGE -->
             <div class="video-theater-block">
                 <div class="video-viewport-wrapper" id="viewportFrame">
                     <video id="video" autoplay playsinline></video>
                     
-                    <!-- INTERACTIVE LIVE SYNC ACTION BADGE -->
                     <button class="hud-live-tag-btn" onclick="event.stopPropagation(); syncToLiveTime();" title="Sync to Realtime Live Stream">Live</button>
                     
-                    <!-- PLAYBACK CONTROLS OVERLAY INTERACTION HUD -->
                     <div class="playback-hud-overlay" id="hudOverlay">
                         <button class="hud-btn" onclick="event.stopPropagation(); prevChannel();" title="Previous Station">
                             <i class="fas fa-backward"></i>
@@ -596,21 +650,24 @@
                 </div>
             </div>
 
-            <!-- RIGHT NAVIGATION PANEL SIDEBAR -->
             <div class="navigation-sidebar-block">
                 <div class="search-deck">
                     <div class="search-input-container">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchConsole" placeholder="Search live streams..." onkeyup="filterLiveMatrix()">
+                        <input type="text" id="searchConsole" placeholder="Search live streams..." onkeyup="executeGlobalSearchFilter()">
                     </div>
                 </div>
 
-                <!-- CHANNELS TUNNEL -->
+                <div class="category-filter-deck" id="categorySlider">
+                    <div class="category-pill active-pill" onclick="selectCategoryFilter('ALL')" id="pill-ALL">
+                        All <span class="counter-badge" id="count-ALL">0</span>
+                    </div>
+                </div>
+
                 <div class="grid-scroll-tunnel">
                     <div class="channel-matrix-grid" id="channelGrid"></div>
                 </div>
 
-                <!-- SOCIAL ATTACHMENT DECK -->
                 <div class="social-engagement-deck">
                     <div class="engagement-prompt">আমার টিভি সম্পর্কে মতামত জানাতে</div>
                     <div class="hyperlink-cluster">
@@ -627,7 +684,6 @@
         </div>
     </div>
 
-    <!-- PREMIUM APPLICATION FOOTER LAYER WITH LINKEDIN CONNECTIVITY -->
     <footer class="app-footer">
         <div class="footer-copyright">
             &copy; 2026 <span>AH IPTV</span> Studio. All Rights Reserved.
@@ -637,71 +693,152 @@
         </div>
     </footer>
 
-    <!-- MAIN SYSTEM CONTROLLER CORE ENGINE -->
     <script>
-        const endpointPlaylist = 'https://raw.githubusercontent.com/AbirHassan12/AH-IPTV/refs/heads/main/aynaott.m3u';
+        // ASYNCHRONOUS MULTI-ENDPOINT ENGINE CONFIGURATION
+        const playlistEndpoints = [
+            'https://raw.githubusercontent.com/AbirHassan12/AH-IPTV/refs/heads/main/aynaott.m3u',
+            'https://raw.githubusercontent.com/AbirHassan12/m3u/refs/heads/main/Sports-138.m3u'
+        ];
+
         let channelRegistry = [];
-        let cursorIndex = 0;
+        let runningFilteredIndices = []; 
+        let cursorIndex = 0; 
+        let currentSelectedCategory = 'ALL';
         let hudFadeTimeout;
         const videoElement = document.getElementById('video');
         const viewportFrame = document.getElementById('viewportFrame');
 
-        // INGEST PARSE REGISTRY
-        fetch(endpointPlaylist)
-            .then(res => res.text())
-            .then(payload => {
-                const lines = payload.split('\n');
-                for(let i = 0; i < lines.length; i++) {
-                    if(lines[i].startsWith('#EXTINF')) {
-                        const referenceTag = lines[i];
-                        const streamUrl = lines[i+1] ? lines[i+1].trim() : '';
-                        
-                        if(!streamUrl || streamUrl.startsWith('#')) continue;
+        // PARSE MULTIPLE PLAYLIST STREAMS CONCURRENTLY
+        Promise.all(playlistEndpoints.map(url => fetch(url).then(res => res.text())))
+            .then(playlistsData => {
+                playlistsData.forEach((payload, urlIndex) => {
+                    const lines = payload.split('\n');
+                    
+                    for(let i = 0; i < lines.length; i++) {
+                        if(lines[i].startsWith('#EXTINF')) {
+                            const referenceTag = lines[i];
+                            const streamUrl = lines[i+1] ? lines[i+1].trim() : '';
+                            
+                            if(!streamUrl || streamUrl.startsWith('#')) continue;
 
-                        const parseSegment = referenceTag.split(',')[1];
-                        const streamName = parseSegment ? parseSegment.trim() : 'Live Stream Station';
-                        
-                        let assetLogo = '';
-                        const extractionMatch = referenceTag.match(/tvg-logo="(.*?)"/);
-                        if(extractionMatch) assetLogo = extractionMatch[1];
+                            const parseSegment = referenceTag.split(',')[1];
+                            const streamName = parseSegment ? parseSegment.trim() : 'Live Stream Station';
+                            
+                            // Extract tvg-logo
+                            let assetLogo = '';
+                            const logoMatch = referenceTag.match(/tvg-logo="(.*?)"/);
+                            if(logoMatch) assetLogo = logoMatch[1];
 
-                        channelRegistry.push({ name: streamName, url: streamUrl, logo: assetLogo });
+                            // Dynamic Categorization Mapping
+                            let categoryName = 'UNCATEGORIZED';
+                            const groupMatch = referenceTag.match(/group-title="(.*?)"/);
+                            
+                            if(groupMatch && groupMatch[1].trim() !== "") {
+                                categoryName = groupMatch[1].trim().toUpperCase();
+                            } else if(urlIndex === 1) {
+                                // Fallback tag fallback context specifically for the Sports file
+                                categoryName = 'SPORTS';
+                            }
+
+                            channelRegistry.push({ 
+                                name: streamName, 
+                                url: streamUrl, 
+                                logo: assetLogo,
+                                category: categoryName
+                            });
+                        }
                     }
-                }
-                compileInterfaceGrid();
-                if(channelRegistry.length > 0) streamChannelTarget(0);
-            }).catch(fault => console.error("Critical M3U structural mapping fault: ", fault));
-
-        // COMPILE INTERFACE STREAM CARD GRID
-        function compileInterfaceGrid() {
-            const containerGrid = document.getElementById('channelGrid');
-            containerGrid.innerHTML = '';
-
-            channelRegistry.forEach((station, pointer) => {
-                const nodeCard = document.createElement('div');
-                nodeCard.className = 'channel-card';
+                });
                 
-                if(station.logo) {
-                    const visualAsset = document.createElement('img');
-                    visualAsset.src = station.logo;
-                    visualAsset.alt = station.name;
-                    visualAsset.onerror = function() {
-                        nodeCard.innerHTML = `<span class="fallback-text-frame">${station.name}</span>`;
-                    };
-                    nodeCard.appendChild(visualAsset);
-                } else {
-                    nodeCard.innerHTML = `<span class="fallback-text-frame">${station.name}</span>`;
-                }
+                generateCategoryPills();
+                executeGlobalSearchFilter(true); // Populate combined channel matrix grid automatically
+            })
+            .catch(fault => console.error("Critical M3U data payload parsing fault: ", fault));
 
-                nodeCard.onclick = () => streamChannelTarget(pointer);
-                containerGrid.appendChild(nodeCard);
+        // BUILD CATEGORY TABS DYNAMICALLY
+        function generateCategoryPills() {
+            const slider = document.getElementById('categorySlider');
+            
+            let counts = { 'ALL': channelRegistry.length };
+            channelRegistry.forEach(ch => {
+                counts[ch.category] = (counts[ch.category] || 0) + 1;
             });
+
+            document.getElementById('count-ALL').innerText = counts['ALL'];
+
+            const uniqueCategories = Object.keys(counts).filter(cat => cat !== 'ALL').sort();
+
+            uniqueCategories.forEach(category => {
+                const pill = document.createElement('div');
+                pill.className = 'category-pill';
+                pill.id = `pill-${category}`;
+                const cleanName = category.charAt(0) + category.slice(1).toLowerCase();
+                pill.innerHTML = `${cleanName} <span class="counter-badge">${counts[category]}</span>`;
+                pill.onclick = () => selectCategoryFilter(category);
+                slider.appendChild(pill);
+            });
+        }
+
+        function selectCategoryFilter(category) {
+            currentSelectedCategory = category;
+            document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active-pill'));
+            document.getElementById(`pill-${category}`).classList.add('active-pill');
+            
+            executeGlobalSearchFilter(true); 
+        }
+
+        // FILTER MANAGEMENT ENGINE
+        function executeGlobalSearchFilter(resetPlaybackToFirstMatch = false) {
+            const queryToken = document.getElementById('searchConsole').value.toLowerCase();
+            const containerGrid = document.getElementById('channelGrid');
+            containerGrid.innerHTML = ''; 
+            
+            runningFilteredIndices = [];
+
+            channelRegistry.forEach((station, originalIndex) => {
+                const matchCategory = (currentSelectedCategory === 'ALL' || station.category === currentSelectedCategory);
+                const matchSearch = station.name.toLowerCase().includes(queryToken);
+
+                if(matchCategory && matchSearch) {
+                    runningFilteredIndices.push(originalIndex);
+
+                    const nodeCard = document.createElement('div');
+                    nodeCard.className = 'channel-card';
+                    nodeCard.setAttribute('data-index', originalIndex);
+                    
+                    if(station.logo) {
+                        const visualAsset = document.createElement('img');
+                        visualAsset.src = station.logo;
+                        visualAsset.alt = station.name;
+                        visualAsset.onerror = function() {
+                            nodeCard.innerHTML = `<span class="fallback-text-frame">${station.name}</span>`;
+                        };
+                        nodeCard.appendChild(visualAsset);
+                    } else {
+                        nodeCard.innerHTML = `<span class="fallback-text-frame">${station.name}</span>`;
+                    }
+
+                    nodeCard.onclick = () => {
+                        const localFilterPosition = runningFilteredIndices.indexOf(originalIndex);
+                        if(localFilterPosition !== -1) cursorIndex = localFilterPosition;
+                        streamChannelTarget(originalIndex);
+                    };
+
+                    containerGrid.appendChild(nodeCard);
+                }
+            });
+
+            reapplyActiveHighlightState();
+
+            if(resetPlaybackToFirstMatch && runningFilteredIndices.length > 0) {
+                cursorIndex = 0;
+                streamChannelTarget(runningFilteredIndices[0]);
+            }
         }
 
         // HLS CORE PLAYBACK CONTROLLER
         function streamChannelTarget(targetIndex) {
             if(targetIndex < 0 || targetIndex >= channelRegistry.length) return;
-            cursorIndex = targetIndex;
             const targetedStation = channelRegistry[targetIndex];
             
             if (Hls.isSupported()) {
@@ -716,51 +853,56 @@
                 hlsInstance.loadSource(targetedStation.url);
                 hlsInstance.attachMedia(videoElement);
                 hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => { 
-                    videoElement.play().catch(e => console.log("Autoplay context:", e)); 
+                    videoElement.play().catch(e => console.log("Autoplay content status:", e)); 
                 });
             } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
                 videoElement.src = targetedStation.url;
-                videoElement.play().catch(e => console.log("Safari platform fallback context:", e));
+                videoElement.play().catch(e => console.log("Safari platform fallback status:", e));
             }
 
-            document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('state-active'));
-            const activeStack = document.querySelectorAll('.channel-card');
-            if(activeStack[targetIndex]) {
-                activeStack[targetIndex].classList.add('state-active');
-                activeStack[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            reapplyActiveHighlightState();
             updateMasterPlaybackIcon(true);
         }
 
-        // INSTANT LIVE SYNCHRONIZER
+        function reapplyActiveHighlightState() {
+            document.querySelectorAll('.channel-card').forEach(card => card.classList.remove('state-active'));
+            if(runningFilteredIndices.length > 0 && runningFilteredIndices[cursorIndex] !== undefined) {
+                const absoluteActiveIdx = runningFilteredIndices[cursorIndex];
+                const activeCardNode = document.querySelector(`.channel-card[data-index="${absoluteActiveIdx}"]`);
+                if(activeCardNode) {
+                    activeCardNode.classList.add('state-active');
+                    activeCardNode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        }
+
         function syncToLiveTime() {
             if (window.globalHlsRuntime) {
-                // Hls engine edge computation jump
                 videoElement.currentTime = window.globalHlsRuntime.liveSyncPosition;
                 videoElement.play().catch(e => console.log(e));
             } else {
-                // Native desktop and mobile browsers edge seek jump
                 if (videoElement.seekable.length > 0) {
                     videoElement.currentTime = videoElement.seekable.end(videoElement.seekable.length - 1);
                     videoElement.play().catch(e => console.log(e));
                 }
-            }
+            }-
             updateMasterPlaybackIcon(true);
         }
 
         function nextChannel() {
-            let incrementedPointer = cursorIndex + 1;
-            if(incrementedPointer >= channelRegistry.length) incrementedPointer = 0;
-            streamChannelTarget(incrementedPointer);
+            if(runningFilteredIndices.length === 0) return;
+            cursorIndex++;
+            if(cursorIndex >= runningFilteredIndices.length) cursorIndex = 0;
+            streamChannelTarget(runningFilteredIndices[cursorIndex]);
         }
 
         function prevChannel() {
-            let decrementedPointer = cursorIndex - 1;
-            if(decrementedPointer < 0) decrementedPointer = channelRegistry.length - 1;
-            streamChannelTarget(decrementedPointer);
+            if(runningFilteredIndices.length === 0) return;
+            cursorIndex--;
+            if(cursorIndex < 0) cursorIndex = runningFilteredIndices.length - 1;
+            streamChannelTarget(runningFilteredIndices[cursorIndex]);
         }
 
-        // TOGGLE INTERACTION LAYERS
         function togglePlay() {
             if(videoElement.paused) {
                 videoElement.play();
@@ -787,7 +929,6 @@
             }
         }
 
-        // UPDATE SCREEN ORIENTATION ICON CHANGES
         document.addEventListener('fullscreenchange', () => {
             const screenIcon = document.querySelector('#masterScreenBtn i');
             if (document.fullscreenElement) {
@@ -802,7 +943,6 @@
             graphicIcon.className = isCurrentlyPlaying ? 'fas fa-pause' : 'fas fa-play';
         }
 
-        // SYSTEM SHORTCUT WINDOW MANAGEMENT
         window.addEventListener('keydown', (e) => {
             if (document.activeElement.tagName === 'INPUT') return; 
             if (e.code === 'Space') {
@@ -812,25 +952,7 @@
             }
         });
 
-        // REAL-TIME SEARCH CONSOLE
-        function filterLiveMatrix() {
-            const queryToken = document.getElementById('searchConsole').value.toLowerCase();
-            const compiledCards = document.querySelectorAll('.channel-card');
-
-            channelRegistry.forEach((item, index) => {
-                if(compiledCards[index]) {
-                    if(item.name.toLowerCase().includes(queryToken)) {
-                        compiledCards[index].style.display = 'flex';
-                    } else {
-                        compiledCards[index].style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        // HUD AUTO-HIDE CONTROL LAYER
         function cycleHudStateVisibility(e) {
-            // Prevent auto-pauses on screen touches
             if(e && e.type === 'touchstart' && e.target !== videoElement && e.target.id !== 'hudOverlay') {
                 return;
             }
@@ -845,7 +967,6 @@
         viewportFrame.addEventListener('touchstart', cycleHudStateVisibility, { passive: true });
     </script>
 
-    <!-- METRICS LAYER -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
         import { getDatabase, ref, set, get, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
