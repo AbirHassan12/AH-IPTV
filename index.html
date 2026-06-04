@@ -8,25 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <style>
         :root {
-            --bg-deep: #030407;
-            --bg-surface: #0a0c14;
-            --bg-card: rgba(18, 22, 36, 0.7);
-            --bg-card-hover: rgba(28, 34, 56, 0.9);
-            --primary: #7000ff;
-            --primary-glow: rgba(112, 0, 255, 0.4);
+            --bg-deep: #07080b;
+            --bg-surface: #0f111a;
+            --bg-card: #171923;
+            --primary: #ff002b;
+            --primary-glow: rgba(255, 0, 43, 0.4);
             --accent-cyan: #00f0ff;
-            --accent-cyan-glow: rgba(0, 240, 255, 0.3);
             --text-pure: #ffffff;
-            --text-stale: #7e869c;
-            --line-edge: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-stale: #8a8f9d;
+            --line-edge: rgba(255, 255, 255, 0.04);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -37,17 +34,12 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.03) 0%, transparent 40%);
         }
 
-        /* PREMIUM NAVBAR */
+        /* PREMIUM BAR DESIGN */
         .app-navbar {
-            background: rgba(10, 12, 20, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 20px 40px;
+            background: linear-gradient(to bottom, #0d0f17, var(--bg-deep));
+            padding: 16px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -57,61 +49,50 @@
         }
 
         .brand-logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 900;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            background: linear-gradient(135deg, var(--text-pure) 60%, var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .brand-logo span {
-            background: linear-gradient(135deg, #a35cff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px var(--primary-glow);
-            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary-glow);
         }
 
-        /* LIVE TELEMETRY TELEMETRY PILOTS */
+        /* METRICS MONITORING SYSTEM */
         .telemetry-deck {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             align-items: center;
         }
 
         .metric-pill {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
+            border: 1px solid var(--line-edge);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: var(--text-stale);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .metric-pill .pulse-indicator {
-            width: 8px;
-            height: 8px;
-            background: #00ff88;
+            width: 6px;
+            height: 6px;
+            background: #00ff66;
             border-radius: 50%;
-            box-shadow: 0 0 12px #00ff88;
-            animation: pulseFade 2s infinite ease-in-out;
+            box-shadow: 0 0 10px #00ff66;
         }
 
         .metric-pill span.highlight {
             color: var(--text-pure);
-            font-weight: 700;
         }
 
+        /* WRAPPER TO CONTROL BODY SCROLL CONFLICTS WITH FOOTER */
         .content-wrapper {
             display: flex;
             flex-direction: column;
@@ -119,29 +100,29 @@
             overflow: hidden;
         }
 
-        /* CONTAINER STAGE LAYOUT */
+        /* APP STAGE CONTAINER CORE FRAMEWORK */
         .app-stage {
             display: flex;
             flex-direction: column;
             flex: 1;
             overflow: hidden;
             width: 100%;
-            max-width: 1700px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 30px;
-            gap: 30px;
+            padding: 24px;
+            gap: 24px;
         }
 
         @media (min-width: 1024px) {
             .app-stage {
                 flex-direction: row;
-                height: calc(100vh - 145px);
+                height: calc(100vh - 135px);
             }
             .video-theater-block {
-                flex: 1.5;
+                flex: 1.4;
                 position: sticky;
                 top: 0;
-                height: 100%;
+                height: 100% !important;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -150,25 +131,24 @@
                 flex: 0.9;
                 height: 100%;
                 background: var(--bg-surface);
-                border-radius: 24px;
+                border-radius: 20px;
                 border: 1px solid var(--line-edge);
                 display: flex;
                 flex-direction: column;
                 overflow: hidden;
-                box-shadow: 0 30px 60px rgba(0,0,0,0.4);
             }
         }
 
-        /* THEATER ENGINE STAGE */
+        /* FIXED VIDEO WINDOW CONSOLE */
         .video-viewport-wrapper {
             position: relative;
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(112, 0, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
         }
 
         .video-viewport-wrapper video {
@@ -177,23 +157,23 @@
             object-fit: contain;
         }
 
-        /* FLOATING NAVIGATION HUD OVERLAY */
+        /* INTERACTION HUD OVERLAY */
         .playback-hud-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 90px;
-            background: linear-gradient(to top, rgba(3,4,7,0.95) 0%, rgba(3,4,7,0.5) 60%, transparent 100%);
+            height: 80px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
             z-index: 10;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            padding-top: 10px;
+            transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 15px;
         }
 
         .video-viewport-wrapper:hover .playback-hud-overlay,
@@ -203,87 +183,85 @@
         }
 
         .hud-btn {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border: none;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.08);
             color: var(--text-pure);
-            font-size: 15px;
+            font-size: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .hud-btn:hover {
             background: var(--text-pure);
             color: var(--bg-deep);
-            transform: scale(1.1) translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transform: scale(1.08);
         }
 
         .hud-btn.hud-master-play {
-            width: 58px;
-            height: 58px;
-            font-size: 20px;
+            width: 52px;
+            height: 52px;
+            font-size: 18px;
             background: var(--primary);
             border-color: transparent;
-            box-shadow: 0 0 30px var(--primary-glow);
+            box-shadow: 0 0 20px var(--primary-glow);
         }
 
         .hud-btn.hud-master-play:hover {
-            background: #841fff;
-            transform: scale(1.08) translateY(-2px);
-            box-shadow: 0 0 35px rgba(112, 0, 255, 0.6);
+            background: #ff2247;
+            transform: scale(1.06);
             color: var(--text-pure);
         }
 
-        /* LIVE TIMELINE TAG */
+        /* CLICKABLE REALTIME LIVE SYNC BUTTON */
         .hud-live-tag-btn {
             position: absolute;
-            top: 24px;
-            left: 24px;
-            background: rgba(112, 0, 255, 0.15);
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 0, 43, 0.2);
             border: 1px solid var(--primary);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 800;
             color: var(--text-pure);
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
             z-index: 15;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.25s ease;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 0 20px rgba(112, 0, 255, 0.2);
+            gap: 6px;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px rgba(255, 0, 43, 0.3);
         }
 
         .hud-live-tag-btn::before {
             content: '';
             width: 6px;
             height: 6px;
-            background: var(--accent-cyan);
+            background: #ff002b;
             border-radius: 50%;
             display: inline-block;
-            box-shadow: 0 0 10px var(--accent-cyan);
+            box-shadow: 0 0 8px #ff002b;
         }
 
         .hud-live-tag-btn:hover {
             background: var(--primary);
-            box-shadow: 0 0 25px var(--primary-glow);
-            transform: translateY(-1px);
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: scale(1.04);
         }
 
-        /* SEARCH CORE ELEMENT */
+        /* REFACTORED SEARCH SYSTEM */
         .search-deck {
-            padding: 24px 24px 14px 24px;
+            padding: 20px 20px 10px 20px;
+            border-bottom: none;
             flex-shrink: 0;
         }
 
@@ -294,42 +272,36 @@
 
         .search-input-container i {
             position: absolute;
-            left: 18px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-stale);
-            font-size: 16px;
-            transition: color 0.3s ease;
+            font-size: 15px;
         }
 
         .search-input-container input {
             width: 100%;
-            padding: 16px 18px 16px 52px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            padding: 14px 16px 14px 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line-edge);
+            border-radius: 14px;
             color: var(--text-pure);
-            font-size: 15px;
+            font-size: 14px;
             outline: none;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            transition: all 0.20s ease;
         }
 
         .search-input-container input:focus {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.06);
             border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(112, 0, 255, 0.25), inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 0 15px rgba(255, 0, 43, 0.15);
         }
 
-        .search-input-container input:focus + i {
-            color: var(--accent-cyan);
-        }
-
-        /* CATEGORY CAROUSEL CHIPS */
+        /* DYNAMIC CATEGORY FILTER DECK */
         .category-filter-deck {
             display: flex;
-            gap: 12px;
-            padding: 0 24px 20px 24px;
+            gap: 10px;
+            padding: 0 20px 15px 20px;
             overflow-x: auto;
             white-space: nowrap;
             flex-shrink: 0;
@@ -337,202 +309,192 @@
         }
 
         .category-filter-deck::-webkit-scrollbar {
-            height: 3px;
+            height: 4px;
         }
         .category-filter-deck::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
         }
 
         .category-pill {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line-edge);
             color: var(--text-stale);
-            padding: 10px 20px;
-            border-radius: 14px;
-            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .category-pill:hover {
             color: var(--text-pure);
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .category-pill.active-pill {
-            background: linear-gradient(135deg, var(--primary), #5000b8);
+            background: var(--primary);
             color: var(--text-pure);
             border-color: transparent;
-            box-shadow: 0 8px 20px var(--primary-glow);
+            box-shadow: 0 5px 15px var(--primary-glow);
         }
 
         .category-pill .counter-badge {
-            font-size: 11px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 8px;
-            border-radius: 8px;
-            color: var(--text-stale);
-            font-weight: 700;
+            font-size: 10px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.85);
         }
         
         .category-pill.active-pill .counter-badge {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             color: var(--text-pure);
         }
 
-        /* SCROLLABLE GRID BOX CONTAINER */
+        /* ENGINE SCROLL TUNNEL */
         .grid-scroll-tunnel {
             flex: 1;
             overflow-y: auto;
-            padding: 24px;
+            padding: 20px;
         }
 
         .grid-scroll-tunnel::-webkit-scrollbar {
             width: 6px;
         }
         .grid-scroll-tunnel::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
         }
 
         .channel-matrix-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 14px;
         }
 
-        /* GRID CHANNEL CARD SHAPES */
+        /* CARD COMPONENT DESIGN */
         .channel-card {
             background: var(--bg-card);
-            border-radius: 20px;
+            border-radius: 14px;
             aspect-ratio: 1/1;
-            padding: 16px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid var(--line-edge);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .channel-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            background: var(--bg-card-hover);
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4), 0 0 20px rgba(112, 0, 255, 0.1);
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
         }
 
         .channel-card img {
-            width: 80%;
-            height: 80%;
+            width: 85%;
+            height: 85%;
             object-fit: contain;
-            transition: transform 0.3s ease;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            transition: transform 0.25s ease;
         }
 
         .channel-card:hover img {
-            transform: scale(1.06);
+            transform: scale(1.05);
         }
 
         .fallback-text-frame {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-stale);
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
             line-height: 1.4;
             word-break: break-word;
         }
 
-        /* ACTIVE SELECTION MAPPER BORDERS */
+        /* TRACK ACTIVE CHANNEL LOGIC STATE */
         .channel-card.state-active {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 240, 255, 0.03);
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.05);
+            border-color: var(--primary);
+            background: rgba(255, 0, 43, 0.04);
+            box-shadow: inset 0 0 15px rgba(255, 0, 43, 0.15);
         }
 
         .channel-card.state-active::before {
             content: '';
             position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-cyan);
+            top: 8px;
+            right: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--accent-cyan);
+            box-shadow: 0 0 8px var(--primary);
         }
 
-        /* SOCIAL CHANNELS CONTAINER FOOTER */
+        /* SOCIAL ENGAGEMENT DECK */
         .social-engagement-deck {
-            padding: 24px;
-            background: linear-gradient(to top, rgba(3,4,7,1), transparent);
+            padding: 20px;
+            background: linear-gradient(to top, #0b0c13, transparent);
             border-top: 1px solid var(--line-edge);
             text-align: center;
             flex-shrink: 0;
         }
 
         .engagement-prompt {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-stale);
-            margin-bottom: 16px;
-            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
         }
 
         .hyperlink-cluster {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
         }
 
         .social-trigger-node {
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 20px;
+            font-size: 18px;
             color: var(--text-pure);
             text-decoration: none;
-            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.2s ease;
             position: relative;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .social-trigger-node:hover {
-            transform: translateY(-4px);
-            filter: brightness(1.2);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transform: translateY(-3px);
+            filter: brightness(1.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .node-telegram { 
-            background: linear-gradient(135deg, #2ea6de, #1d7ea8); 
-            box-shadow: 0 4px 15px rgba(46, 166, 222, 0.3);
-        }
-        .node-facebook { 
-            background: linear-gradient(135deg, #1877f2, #0d54b3); 
-            box-shadow: 0 4px 15px rgba(24, 119, 246, 0.3);
-        }
+        .node-telegram { background: #229ED9; }
+        .node-facebook { background: #1877F2; }
 
-        /* MAIN APP ATTRIBUTION FOOTER */
+        /* PREMIUM APPLICATION FOOTER LAYER */
         .app-footer {
-            background: #030407;
+            background: #090b11;
             border-top: 1px solid var(--line-edge);
-            padding: 20px 40px;
+            padding: 18px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -541,28 +503,28 @@
         }
 
         .footer-copyright {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-stale);
             font-weight: 500;
             letter-spacing: 0.5px;
         }
 
         .footer-copyright span {
-            color: var(--accent-cyan);
+            color: var(--primary);
             font-weight: 800;
         }
 
         .footer-attribution {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-stale);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .footer-attribution i {
             color: var(--primary);
-            font-size: 12px;
+            font-size: 11px;
             animation: heartPulse 1.6s infinite ease-in-out;
         }
 
@@ -570,44 +532,39 @@
             color: var(--text-pure);
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.25s ease;
+            transition: color 0.2s ease;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .footer-attribution a i {
             color: #0077b5;
             animation: none;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .footer-attribution a:hover {
-            color: var(--accent-cyan);
+            color: var(--primary);
         }
 
         @keyframes heartPulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.25); }
+            50% { transform: scale(1.2); }
         }
 
-        @keyframes pulseFade {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* MEDIA ADAPTATION LAYER */
+        /* STICKY/FIXED RESPONSIVE LAYOUT SYSTEM DEPLOYMENT */
         @media (max-width: 1023px) {
             body {
                 overflow: hidden;
                 height: 100vh;
             }
             .app-navbar {
-                padding: 16px 20px;
+                padding: 12px 16px;
             }
             .content-wrapper {
                 overflow: hidden;
-                height: calc(100vh - 75px);
+                height: calc(100vh - 65px);
             }
             .app-stage {
                 padding: 0;
@@ -621,16 +578,16 @@
                 width: 100%;
                 z-index: 50;
                 background: var(--bg-deep);
-                padding: 12px 12px 18px 12px;
+                padding: 10px 10px 15px 10px;
                 flex-shrink: 0;
             }
             .video-viewport-wrapper {
-                border-radius: 18px;
+                border-radius: 14px;
             }
             .navigation-sidebar-block {
                 flex: 1;
                 background: var(--bg-surface);
-                border-radius: 24px 24px 0 0;
+                border-radius: 20px 20px 0 0;
                 border: 1px solid var(--line-edge);
                 border-bottom: none;
                 overflow: hidden;
@@ -639,16 +596,17 @@
             }
             .app-footer {
                 flex-direction: column;
-                gap: 8px;
-                padding: 16px;
+                gap: 6px;
+                padding: 12px;
                 text-align: center;
-                font-size: 12px;
+                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- APPLICATION SYSTEM BAR -->
     <div class="app-navbar">
         <div class="brand-logo">AH <span>IPTV</span></div>
         
@@ -658,21 +616,25 @@
                 Active: <span class="highlight" id="liveUsers">0</span>
             </div>
             <div class="metric-pill">
-                <i class="fas fa-bolt" style="color: var(--accent-cyan)"></i>
+                <i class="fas fa-eye" style="color: var(--primary)"></i>
                 Hits: <span class="highlight" id="totalViews">0</span>
             </div>
         </div>
     </div>
 
+    <!-- MAIN INTERFACE INNER SCROLL CONTAINER -->
     <div class="content-wrapper">
         <div class="app-stage">
             
+            <!-- LEFT SCREEN STAGE -->
             <div class="video-theater-block">
                 <div class="video-viewport-wrapper" id="viewportFrame">
                     <video id="video" autoplay playsinline></video>
                     
+                    <!-- INTERACTIVE LIVE SYNC ACTION BADGE -->
                     <button class="hud-live-tag-btn" onclick="event.stopPropagation(); syncToLiveTime();" title="Sync to Realtime Live Stream">Live</button>
                     
+                    <!-- PLAYBACK CONTROLS OVERLAY INTERACTION HUD -->
                     <div class="playback-hud-overlay" id="hudOverlay">
                         <button class="hud-btn" onclick="event.stopPropagation(); prevChannel();" title="Previous Station">
                             <i class="fas fa-backward"></i>
@@ -693,24 +655,28 @@
                 </div>
             </div>
 
+            <!-- RIGHT NAVIGATION PANEL SIDEBAR -->
             <div class="navigation-sidebar-block">
                 <div class="search-deck">
                     <div class="search-input-container">
-                        <input type="text" id="searchConsole" placeholder="Search live channels..." onkeyup="executeGlobalSearchFilter()">
                         <i class="fas fa-search"></i>
+                        <input type="text" id="searchConsole" placeholder="Search live streams..." onkeyup="executeGlobalSearchFilter()">
                     </div>
                 </div>
 
+                <!-- DYNAMIC CATEGORY SLIDER DECK -->
                 <div class="category-filter-deck" id="categorySlider">
                     <div class="category-pill active-pill" onclick="selectCategoryFilter('ALL')" id="pill-ALL">
                         All <span class="counter-badge" id="count-ALL">0</span>
                     </div>
                 </div>
 
+                <!-- CHANNELS TUNNEL -->
                 <div class="grid-scroll-tunnel">
                     <div class="channel-matrix-grid" id="channelGrid"></div>
                 </div>
 
+                <!-- SOCIAL ATTACHMENT DECK -->
                 <div class="social-engagement-deck">
                     <div class="engagement-prompt">আমার টিভি সম্পর্কে মতামত জানাতে</div>
                     <div class="hyperlink-cluster">
@@ -727,22 +693,25 @@
         </div>
     </div>
 
+    <!-- PREMIUM APPLICATION FOOTER LAYER -->
     <footer class="app-footer">
         <div class="footer-copyright">
-            &copy; 2026 <span>AH IPTV</span> Premium Studio. All Rights Reserved.
+            &copy; 2026 <span>AH IPTV</span> Studio. All Rights Reserved.
         </div>
         <div class="footer-attribution">
             Made with <i class="fas fa-heart"></i> by <a href="https://www.linkedin.com/in/abirhassan-ah/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> Abir Hassan</a>
         </div>
     </footer>
 
+    <!-- MAIN SYSTEM CONTROLLER CORE ENGINE -->
     <script>
-        // INTEGRATED OPTION 2: EXTRACTING SECOND PLAYLIST LOCALLY FROM WITHIN REPOSITORY
+        // MULTI-ENDPOINT ENGINE CONFIGURATION
         const playlistEndpoints = [
             'https://raw.githubusercontent.com/AbirHassan12/AH-IPTV/refs/heads/main/aynaott.m3u',
-            './Sports-138.m3u' // Safe local path execution layer (Bypasses CORS entirely)
+            'https://cdn.jsdelivr.net/gh/AbirHassan12/AH-IPTV@main/Sports-138.m3u'
         ];
 
+        // AUTO-INJECTION DICTIONARY MAP FOR MISSING LOGOS
         const logoFallbackMatrix = {
             'TSPORTS': 'https://raw.githubusercontent.com/AbirHassan12/m3u/main/logos/tsports.png',
             'T SPORTS': 'https://raw.githubusercontent.com/AbirHassan12/m3u/main/logos/tsports.png',
@@ -768,6 +737,7 @@
         const videoElement = document.getElementById('video');
         const viewportFrame = document.getElementById('viewportFrame');
 
+        // PARSE MULTIPLE PLAYLIST STREAMS CONCURRENTLY WITH SMART LOGO MATCHING
         Promise.all(playlistEndpoints.map(url => fetch(url).then(res => res.text())))
             .then(playlistsData => {
                 playlistsData.forEach((payload, urlIndex) => {
@@ -783,10 +753,12 @@
                             const parseSegment = referenceTag.split(',')[1];
                             const streamName = parseSegment ? parseSegment.trim() : 'Live Stream Station';
                             
+                            // 1. Process explicit tvg-logo tags if they exist
                             let assetLogo = '';
                             const logoMatch = referenceTag.match(/tvg-logo="(.*?)"/);
                             if(logoMatch) assetLogo = logoMatch[1].trim();
 
+                            // 2. Fallback Logo Injection Logic
                             if(!assetLogo || assetLogo === "") {
                                 const normalizedName = streamName.toUpperCase().trim();
                                 for (const [key, value] of Object.entries(logoFallbackMatrix)) {
@@ -797,6 +769,7 @@
                                 }
                             }
 
+                            // Dynamic Categorization Mapping
                             let categoryName = 'UNCATEGORIZED';
                             const groupMatch = referenceTag.match(/group-title="(.*?)"/);
                             
@@ -819,8 +792,9 @@
                 generateCategoryPills();
                 executeGlobalSearchFilter(true); 
             })
-            .catch(fault => console.error("Error structural fetching error map: ", fault));
+            .catch(fault => console.error("Critical M3U structural mapping engine fault: ", fault));
 
+        // BUILD CATEGORY TABS DYNAMICALLY
         function generateCategoryPills() {
             const slider = document.getElementById('categorySlider');
             
@@ -852,6 +826,7 @@
             executeGlobalSearchFilter(true); 
         }
 
+        // EVALUATION AND SEARCH FILTER ENGINE
         function executeGlobalSearchFilter(resetPlaybackToFirstMatch = false) {
             const queryToken = document.getElementById('searchConsole').value.toLowerCase();
             const containerGrid = document.getElementById('channelGrid');
@@ -900,6 +875,7 @@
             }
         }
 
+        // HLS CORE PLAYBACK CONTROLLER
         function streamChannelTarget(targetIndex) {
             if(targetIndex < 0 || targetIndex >= channelRegistry.length) return;
             const targetedStation = channelRegistry[targetIndex];
@@ -916,11 +892,11 @@
                 hlsInstance.loadSource(targetedStation.url);
                 hlsInstance.attachMedia(videoElement);
                 hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => { 
-                    videoElement.play().catch(e => console.log("Engine hook:", e)); 
+                    videoElement.play().catch(e => console.log("Autoplay context status:", e)); 
                 });
             } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
                 videoElement.src = targetedStation.url;
-                videoElement.play().catch(e => console.log("Fallback execution framework:", e));
+                videoElement.play().catch(e => console.log("Platform fallback status:", e));
             }
 
             reapplyActiveHighlightState();
@@ -985,7 +961,7 @@
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 viewportFrame.requestFullscreen().catch(err => {
-                    console.error(`Error going full screen style hooks: ${err.message}`);
+                    console.error(`Fullscreen deployment fault: ${err.message}`);
                 });
             } else {
                 document.exitFullscreen();
@@ -1030,6 +1006,7 @@
         viewportFrame.addEventListener('touchstart', cycleHudStateVisibility, { passive: true });
     </script>
 
+    <!-- METRICS LAYER -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
         import { getDatabase, ref, set, get, onValue, onDisconnect } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
